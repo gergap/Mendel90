@@ -8,6 +8,7 @@
 // X carriage, carries the extruder
 //
 include <x-carriage.scad>
+include <micromot.scad>
 
 module x_carriage_assembly(show_extruder = true, show_fan = true) {
     if(show_extruder) {
@@ -116,4 +117,12 @@ if(0)
         else
             x_carriage_parts_stl();
 else
-    x_carriage_assembly(true, true);
+    x_carriage_assembly(true, false);
+
+if (exploded)
+    translate([0,0,-20])
+        micromot();
+else
+    translate([0,0,-5.1])
+        micromot();
+

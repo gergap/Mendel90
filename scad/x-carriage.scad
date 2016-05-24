@@ -577,6 +577,7 @@ module x_carriage_stl(){
 
                         translate([+ bar_x, -bar_y, rim_thickness - top_thickness - eta])
                             cube([bearing_holder_length(X_bearings) - 2 * eta, bearing_holder_width(X_bearings) - 2 * eta, rim_thickness * 2], center = true);
+                        translate([40,-10,-10]) cylinder(d=13,h=20);
                     }
                 }
                 //
@@ -587,6 +588,7 @@ module x_carriage_stl(){
                         cube([bearing_holder_length(X_bearings) + 2 * bearing_gap + 1, min_wall, rim_thickness], center = true);
 
                 // raised section for nut traps
+                color("yellow")
                 for(xy = mounting_holes)
                     translate([xy[0] - base_offset, xy[1], (nut_trap_thickness - top_thickness) / 2])
                         cylinder(r = 7, h = nut_trap_thickness - top_thickness, center = true);
@@ -682,3 +684,31 @@ module x_carriage_fan_ducts_stl() {
 }
 
 module x_carriage_fan_duct_rot90_stl() rotate([0, 0, 90]) x_carriage_fan_duct_stl();
+
+module sensor_holder() {
+    translate([0,0,30]) cylinder(d=22,h=5);
+    translate([-21,-10,0.001]) cube([10,20,35]);
+    translate([-18,-10,30]) cube([15,20,5]);
+}
+
+module sensor() {
+    color("green") translate([0,0,36]) cylinder(d=19,h=4,$fn=6);
+    color("green") translate([0,0,35+eta]) cylinder(d=21,h=1,$fn=60);
+    color("green") cylinder(d=12,h=62);
+    color("green") translate([0,0,29-eta]) cylinder(d=21,h=1,$fn=60);
+    color("green") translate([0,0,25]) cylinder(d=19,h=4,$fn=6);
+}
+
+module sensor_holder_assembly() {
+    difference() {
+        sensor_holder();
+        sensor();
+    }
+}
+
+xpos=56;
+ypos=-10;
+translate([xpos,ypos,00]) sensor_holder_assembly();
+translate([xpos,ypos,00]) sensor();
+
+cylinder(d=1,h=62);
